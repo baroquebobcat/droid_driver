@@ -1,6 +1,15 @@
 require 'net/telnet'
 
 class DroidDriver
+
+  # port - default 5554
+  def self.open port=5554
+    d = new port
+    yield d
+  ensure
+    d.close
+  end
+
   # port - default 5554
   # second emulator is on 5556, and so on
   def initialize port=5554
