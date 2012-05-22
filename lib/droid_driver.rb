@@ -1,4 +1,5 @@
 require 'net/telnet'
+
 class DroidDriver
   # port - default 5554
   # second emulator is on 5556, and so on
@@ -7,6 +8,7 @@ class DroidDriver
                                   "Port" => port
   end
 
+  # returns true if success, blows up on failure with the message
   def sms number, message
     response = @connection.cmd "String" =>"sms send #{number} #{message}", "Match" => /OK|KO:(.*)/, "Timeout" => 5
     if response.chomp == "OK"
@@ -14,8 +16,6 @@ class DroidDriver
     else
       raise response.chomp.sub "KO:",''
     end
-  rescue Timeout::Error
-    # timed out
   end
   
   # close telnet to emulator
